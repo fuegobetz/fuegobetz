@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FuegoBetz - Smart Money Prediction Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: #080b12; color: #e8eaf0; overflow-x: hidden; }
+
+:root {
+  --fire: #ff6b00;
+  --fire-light: #ff9533;
+  --neon-green: #00e67a;
+  --neon-blue: #3b8aff;
+  --bg-primary: #080b12;
+  --bg-card: #0d1117;
+  --bg-card-hover: #111820;
+  --bg-elevated: #151c28;
+  --border: #1b2333;
+  --border-glow: rgba(255,107,0,0.2);
+  --text: #e8eaf0;
+  --text-muted: #6b7a90;
+  --text-dim: #3d4a5c;
+}
+
+/* --- NAV --- */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(8,11,18,0.88); backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+  height: 64px; display: flex; align-items: center;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 22px;
+  color: var(--fire); text-decoration: none; letter-spacing: -0.5px;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo span { color: #fff; }
+.nav-logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--neon-green); animation: pulse-dot 2s ease infinite; }
+@keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; letter-spacing: 0.2px; }
+.nav-links a:hover { color: #fff; }
+.nav-right { display: flex; gap: 12px; align-items: center; }
+.nav-btn-ghost { color: var(--text-muted); font-size: 13px; font-weight: 500; text-decoration: none; padding: 8px 16px; transition: color 0.2s; }
+.nav-btn-ghost:hover { color: #fff; }
+.nav-cta {
+  background: var(--fire); color: #fff; padding: 9px 22px; border-radius: 8px;
+  font-weight: 600; font-size: 13px; text-decoration: none; transition: all 0.2s;
+  border: none; cursor: pointer;
+}
+.nav-cta:hover { background: var(--fire-light); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(255,107,0,0.25); }
+@media (max-width: 768px) { .nav-links { display: none; } }
+
+/* --- HERO --- */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding: 100px 24px 60px;
+  position: relative;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,107,0,0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(59,138,255,0.04) 0%, transparent 100%);
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(27,35,51,0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(27,35,51,0.3) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 720px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px 6px 8px; border-radius: 100px;
+  background: rgba(0,230,122,0.08); border: 1px solid rgba(0,230,122,0.2);
+  font-size: 12px; font-weight: 600; color: var(--neon-green); margin-bottom: 28px;
+}
+.hero-badge .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--neon-green); animation: pulse-dot 2s ease infinite; }
+.hero h1 {
+  font-family: 'Poppins', sans-serif; font-weight: 900;
+  font-size: clamp(34px, 5.5vw, 64px); line-height: 1.08; margin-bottom: 20px;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, #fff 0%, #fff 60%, var(--fire) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p { font-size: clamp(15px, 1.8vw, 18px); color: var(--text-muted); max-width: 520px; margin: 0 auto 36px; line-height: 1.65; }
+.hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--fire); color: #fff; padding: 14px 32px; border-radius: 10px;
+  font-weight: 700; font-size: 15px; text-decoration: none; transition: all 0.25s;
+  display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer;
+  box-shadow: 0 0 30px rgba(255,107,0,0.15);
+}
+.btn-primary:hover { background: var(--fire-light); transform: translateY(-2px); box-shadow: 0 8px 40px rgba(255,107,0,0.3); }
+.btn-secondary {
+  background: rgba(255,255,255,0.04); color: var(--text-muted); padding: 14px 32px; border-radius: 10px;
+  font-weight: 600; font-size: 15px; text-decoration: none; transition: all 0.25s;
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { border-color: var(--fire); color: #fff; background: rgba(255,107,0,0.05); }
+
+/* --- LIVE SIGNAL CARDS (OddsJam style) --- */
+.live-signals {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+  margin-top: 60px; position: relative; z-index: 1;
+}
+.signal-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 20px 24px; min-width: 280px; max-width: 320px; text-align: left;
+  position: relative; overflow: hidden; transition: all 0.3s;
+}
+.signal-card:hover { border-color: var(--border-glow); transform: translateY(-3px); }
+.signal-card.hot { border-color: rgba(255,107,0,0.3); }
+.signal-card.hot::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--fire), var(--fire-light));
+}
+.signal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.signal-market { font-weight: 700; font-size: 14px; line-height: 1.3; }
+.signal-badge {
+  font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.signal-badge.live { background: rgba(0,230,122,0.12); color: var(--neon-green); }
+.signal-badge.high { background: rgba(255,107,0,0.12); color: var(--fire); }
+.signal-metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.signal-metric { text-align: center; }
+.signal-metric-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.signal-metric-value { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 18px; }
+.signal-metric-value.green { color: var(--neon-green); }
+.signal-metric-value.fire { color: var(--fire); }
+.signal-metric-value.blue { color: var(--neon-blue); }
+.signal-side {
+  display: inline-block; margin-top: 12px; padding: 4px 10px; border-radius: 6px;
+  font-size: 11px; font-weight: 700;
+}
+.signal-side.yes { background: rgba(0,230,122,0.1); color: var(--neon-green); }
+.signal-side.no { background: rgba(255,59,59,0.1); color: #ff4d4d; }
+.signal-sharp { font-size: 11px; color: var(--text-dim); margin-top: 8px; }
+.signal-sharp b { color: var(--text-muted); }
+
+/* --- STATS BAR --- */
+.stats-bar {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  max-width: 900px; margin: -20px auto 0; position: relative; z-index: 2;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+  overflow: hidden;
+}
+.stat-item { padding: 28px 20px; text-align: center; border-right: 1px solid var(--border); }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 28px; }
+.stat-num.green { color: var(--neon-green); }
+.stat-num.fire { color: var(--fire); }
+.stat-num.blue { color: var(--neon-blue); }
+.stat-num.white { background: linear-gradient(135deg, #fff 0%, #fff 60%, var(--fire) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.stat-label { font-size: 12px; color: var(--text-dim); margin-top: 4px; letter-spacing: 0.3px; }
+@media (max-width: 640px) {
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .stat-item:nth-child(odd) { border-right: 1px solid var(--border); }
+  .stat-item:nth-child(n+3) { border-bottom: none; }
+}
+
+/* --- SECTION SHARED --- */
+.section { padding: 100px 24px; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-center { text-align: center; }
+.section-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--fire); margin-bottom: 16px;
+}
+.section-tag .tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fire); }
+.section-title {
+  font-family: 'Poppins', sans-serif; font-weight: 800;
+  font-size: clamp(26px, 3.5vw, 44px); line-height: 1.12; margin-bottom: 16px;
+  letter-spacing: -1px; color: #fff;
+}
+.section-sub { font-size: 16px; color: var(--text-muted); max-width: 520px; line-height: 1.6; }
+.section-center .section-sub { margin: 0 auto; }
+
+/* --- DATA CARDS (OddsJam Insiders style) --- */
+.data-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  margin-top: 48px;
+}
+.data-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+  padding: 32px 28px; position: relative; overflow: hidden; transition: all 0.3s;
+}
+.data-card:hover { border-color: rgba(255,107,0,0.25); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+.data-card-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--text-dim); margin-bottom: 16px;
+}
+.data-card h3 { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 20px; margin-bottom: 10px; color: #fff; }
+.data-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+
+/* Mini chart inside data card */
+.mini-chart { display: flex; align-items: flex-end; gap: 4px; height: 64px; margin-bottom: 12px; }
+.mini-bar {
+  flex: 1; border-radius: 3px 3px 0 0; transition: height 0.5s ease;
+  min-width: 0;
+}
+.chart-labels { display: flex; justify-content: space-between; }
+.chart-labels span { font-size: 10px; color: var(--text-dim); }
+
+/* Confidence meter */
+.confidence-meter { margin-bottom: 16px; }
+.confidence-track { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.confidence-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+.confidence-label { display: flex; justify-content: space-between; align-items: center; }
+.confidence-label span { font-size: 11px; color: var(--text-dim); }
+.confidence-label strong { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 24px; }
+
+/* Big metric */
+.big-metric { text-align: center; margin: 20px 0; }
+.big-metric-value { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 48px; line-height: 1; }
+.big-metric-sub { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+
+@media (max-width: 768px) { .data-cards { grid-template-columns: 1fr; } }
+
+/* --- HOW IT WORKS --- */
+.steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
+.step-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px 24px; text-align: center; position: relative; transition: all 0.3s;
+}
+.step-card:hover { border-color: var(--border-glow); }
+.step-num {
+  width: 36px; height: 36px; border-radius: 10px; margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 14px;
+  background: rgba(255,107,0,0.1); color: var(--fire);
+}
+.step-card h3 { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 8px; color: #fff; }
+.step-card p { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+.step-connector { display: none; } /* future: animated connectors */
+@media (max-width: 768px) { .steps-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .steps-grid { grid-template-columns: 1fr; } }
+
+/* --- EDGE SECTION --- */
+.edge-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 48px;
+}
+.edge-features { list-style: none; }
+.edge-feature {
+  display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.edge-feature:last-child { border: none; }
+.edge-icon {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.edge-icon.green { background: rgba(0,230,122,0.1); }
+.edge-icon.fire { background: rgba(255,107,0,0.1); }
+.edge-icon.blue { background: rgba(59,138,255,0.1); }
+.edge-feature h4 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+.edge-feature p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+/* Edge visual panel */
+.edge-panel {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+  overflow: hidden;
+}
+.edge-panel-header {
+  padding: 16px 24px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.edge-panel-title { font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.edge-panel-live { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--neon-green); font-weight: 600; }
+.edge-panel-live .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--neon-green); animation: pulse-dot 2s ease infinite; }
+.edge-panel-body { padding: 24px; }
+.edge-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0; border-bottom: 1px solid rgba(27,35,51,0.5);
+}
+.edge-row:last-child { border: none; }
+.edge-row-left { display: flex; align-items: center; gap: 12px; }
+.edge-avatar {
+  width: 32px; height: 32px; border-radius: 8px; background: var(--bg-elevated);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--text-muted);
+}
+.edge-name { font-size: 13px; font-weight: 600; }
+.edge-sub { font-size: 11px; color: var(--text-dim); }
+.edge-row-right { text-align: right; }
+.edge-pnl { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; }
+.edge-pnl.green { color: var(--neon-green); }
+.edge-pnl.red { color: #ff4d4d; }
+.edge-roi { font-size: 11px; color: var(--text-dim); }
+@media (max-width: 768px) { .edge-grid { grid-template-columns: 1fr; } }
+
+/* --- RESULTS MARQUEE --- */
+.results-section { overflow: hidden; }
+.results-marquee {
+  margin-top: 48px; position: relative;
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+.results-track {
+  display: flex; gap: 20px; width: max-content;
+  animation: marquee 40s linear infinite;
+}
+.results-track:hover { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+.result-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px; min-width: 300px; flex-shrink: 0;
+}
+.result-pnl { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 28px; color: var(--neon-green); margin-bottom: 12px; }
+.result-card .quote { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; font-style: italic; }
+.result-card .author { font-weight: 600; font-size: 13px; color: #fff; }
+.result-card .role { font-size: 11px; color: var(--text-dim); }
+
+/* --- CTA --- */
+.cta-section {
+  padding: 100px 24px; text-align: center; position: relative;
+  background: radial-gradient(ellipse at 50% 100%, rgba(255,107,0,0.05) 0%, transparent 60%);
+}
+.cta-section::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 200px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--fire), transparent);
+}
+.cta-section h2 {
+  font-family: 'Poppins', sans-serif; font-weight: 900;
+  font-size: clamp(26px, 4vw, 44px); margin-bottom: 12px; letter-spacing: -1px; color: #fff;
+}
+.cta-section h2 .accent { color: var(--fire); }
+.cta-section p { color: var(--text-muted); font-size: 16px; margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+.cta-waitlist {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 6px 6px 6px 20px; margin-top: 20px;
+}
+.cta-waitlist input {
+  background: transparent; border: none; color: #fff; font-size: 14px;
+  font-family: 'Inter', sans-serif; outline: none; width: 220px;
+}
+.cta-waitlist input::placeholder { color: var(--text-dim); }
+.cta-waitlist button {
+  background: var(--fire); color: #fff; border: none; padding: 12px 24px;
+  border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer;
+  transition: all 0.2s; font-family: 'Inter', sans-serif;
+}
+.cta-waitlist button:hover { background: var(--fire-light); }
+
+/* --- FOOTER --- */
+footer {
+  background: var(--bg-primary); border-top: 1px solid var(--border);
+  padding: 48px 24px;
+}
+.footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 40px; }
+.footer-brand {}
+.footer-logo { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 20px; color: var(--fire); margin-bottom: 6px; }
+.footer-logo span { color: #fff; }
+.footer-tagline { font-size: 13px; color: var(--text-dim); max-width: 240px; line-height: 1.5; }
+.footer-socials { display: flex; gap: 10px; margin-top: 16px; }
+.footer-socials a {
+  width: 38px; height: 38px; border-radius: 10px; background: var(--bg-card);
+  border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); text-decoration: none; transition: all 0.2s;
+}
+.footer-socials a:hover { border-color: var(--fire); color: var(--fire); }
+.footer-col {}
+.footer-col h4 { font-size: 12px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.footer-col a { display: block; font-size: 13px; color: var(--text-muted); text-decoration: none; padding: 4px 0; transition: color 0.2s; }
+.footer-col a:hover { color: #fff; }
+.footer-bottom { max-width: 1200px; margin: 32px auto 0; padding: 20px 24px 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); }
+@media (max-width: 640px) {
+  .footer-inner { flex-direction: column; }
+  .footer-bottom { flex-direction: column; gap: 8px; }
+}
+
+/* --- UTILITY --- */
+.glow-text { text-shadow: 0 0 40px rgba(255,107,0,0.15); }
+.gradient-line {
+  height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent);
+  max-width: 1200px; margin: 0 auto;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Fuego<span>Betz</span></a>
+    <div class="nav-links">
+      <a href="#signals">Signals</a>
+      <a href="#how">How It Works</a>
+      <a href="#edge">Our Edge</a>
+      <a href="#results">Results</a>
+    </div>
+    <div class="nav-right">
+      <a href="#" class="nav-btn-ghost" style="border:1px solid var(--border);border-radius:8px;padding:8px 18px;">Log In</a>
+      <a href="https://instagram.com/fuego.betz" target="_blank" class="nav-cta">Join Waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span class="live-dot"></span> Live Tracking Active</div>
+    <h1 class="glow-text">Prediction Market Alpha.<br>Backed by Data.</h1>
+    <p>Track sharp wallets in real-time. Get +EV alerts with Kelly sizing. See where the smart money is going before the market moves.</p>
+    <div class="hero-ctas">
+      <a href="https://instagram.com/fuego.betz" target="_blank" class="btn-primary">Get Early Access &#x2192;</a>
+      <a href="#signals" class="btn-secondary">See Live Signals</a>
+    </div>
+  </div>
+
+  <!-- Live Signal Cards (OddsJam style) -->
+  <div class="live-signals">
+    <div class="signal-card hot">
+      <div class="signal-header">
+        <span class="signal-market">Will BTC hit $100K<br>before April?</span>
+        <span class="signal-badge high">HIGH EV</span>
+      </div>
+      <div class="signal-metrics">
+        <div class="signal-metric">
+          <div class="signal-metric-label">Edge</div>
+          <div class="signal-metric-value green">+12.4%</div>
+        </div>
+        <div class="signal-metric">
+          <div class="signal-metric-label">Kelly</div>
+          <div class="signal-metric-value fire">$340</div>
+        </div>
+        <div class="signal-metric">
+          <div class="signal-metric-label">EV Score</div>
+          <div class="signal-metric-value blue">72</div>
+        </div>
+      </div>
+      <span class="signal-side yes">BUY YES @ 62%</span>
+      <div class="signal-sharp"><b>3 sharp wallets</b> on same side</div>
+    </div>
+
+    <div class="signal-card hot">
+      <div class="signal-header">
+        <span class="signal-market">Lakers vs. Celtics<br>Spread -4.5</span>
+        <span class="signal-badge live">LIVE</span>
+      </div>
+      <div class="signal-metrics">
+        <div class="signal-metric">
+          <div class="signal-metric-label">Edge</div>
+          <div class="signal-metric-value green">+8.7%</div>
+        </div>
+        <div class="signal-metric">
+          <div class="signal-metric-label">Kelly</div>
+          <div class="signal-metric-value fire">$220</div>
+        </div>
+        <div class="signal-metric">
+          <div class="signal-metric-label">EV Score</div>
+          <div class="signal-metric-value blue">65</div>
+        </div>
+      </div>
+      <span class="signal-side no">BUY NO @ 45%</span>
+      <div class="signal-sharp"><b>5 sharp wallets</b> on same side</div>
+    </div>
+
+    <div class="signal-card">
+      <div class="signal-header">
+        <span class="signal-market">Iran ceasefire<br>by end of March?</span>
+        <span class="signal-badge high">HIGH EV</span>
+      </div>
+      <div class="signal-metrics">
+        <div class="signal-metric">
+          <div class="signal-metric-label">Edge</div>
+          <div class="signal-metric-value green">+18.2%</div>
+        </div>
+        <div class="signal-metric">
+          <div class="signal-metric-label">Kelly</div>
+          <div class="signal-metric-value fire">$480</div>
+        </div>
+        <div class="signal-metric">
+          <div class="signal-metric-label">EV Score</div>
+          <div class="signal-metric-value blue">81</div>
+        </div>
+      </div>
+      <span class="signal-side no">BUY NO @ 88%</span>
+      <div class="signal-sharp"><b>4 sharp wallets</b> on same side</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num white">+58%</div>
+    <div class="stat-label">Avg. ROI (90 Days)</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num white">500+</div>
+    <div class="stat-label">Wallets Tracked</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num white">1,200+</div>
+    <div class="stat-label">Signals Generated</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num white">$0</div>
+    <div class="stat-label">Setup Cost</div>
+  </div>
+</div>
+
+<!-- SIGNAL INTELLIGENCE SECTION -->
+<section class="section" id="signals">
+  <div class="section-inner section-center">
+    <div class="section-tag"><span class="tag-dot"></span> Signal Intelligence</div>
+    <h2 class="section-title">Know When to Enter.<br>How Much to Bet. When to Exit.</h2>
+    <p class="section-sub">Three data engines working together to give you an unfair advantage on every trade.</p>
+  </div>
+  <div class="section-inner">
+    <div class="data-cards">
+      <!-- Card 1: When to Enter -->
+      <div class="data-card">
+        <div class="data-card-label">Signal #1</div>
+        <h3>When to Enter</h3>
+        <p>Our consensus algorithm detects when multiple sharp wallets converge on the same side of a market.</p>
+        <div class="confidence-meter">
+          <div class="confidence-label">
+            <span>Confidence Score</span>
+            <strong style="color:var(--neon-green);">87</strong>
+          </div>
+          <div class="confidence-track">
+            <div class="confidence-fill" style="width:87%;background:linear-gradient(90deg,var(--neon-green),#00b862);"></div>
+          </div>
+        </div>
+        <div class="mini-chart">
+          <div class="mini-bar" style="height:20%;background:var(--border);"></div>
+          <div class="mini-bar" style="height:35%;background:var(--border);"></div>
+          <div class="mini-bar" style="height:25%;background:var(--border);"></div>
+          <div class="mini-bar" style="height:50%;background:var(--border);"></div>
+          <div class="mini-bar" style="height:65%;background:rgba(255,107,0,0.3);"></div>
+          <div class="mini-bar" style="height:55%;background:rgba(255,107,0,0.4);"></div>
+          <div class="mini-bar" style="height:80%;background:rgba(255,107,0,0.6);"></div>
+          <div class="mini-bar" style="height:100%;background:var(--fire);border-radius:3px;"></div>
+        </div>
+        <div class="chart-labels"><span>Low conviction</span><span style="color:var(--fire);font-weight:600;">Sharp entry &#x2192;</span></div>
+      </div>
+      <!-- Card 2: How Much to Bet -->
+      <div class="data-card">
+        <div class="data-card-label">Signal #2</div>
+        <h3>How Much to Bet</h3>
+        <p>Kelly criterion calculates your optimal position size based on edge magnitude and your bankroll.</p>
+        <div class="big-metric">
+          <div class="big-metric-value" style="color:var(--fire);">$340</div>
+          <div class="big-metric-sub">Optimal bet on $8K bankroll</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid var(--border);">
+          <div style="text-align:center;flex:1;">
+            <div style="font-size:11px;color:var(--text-dim);">Edge</div>
+            <div style="font-family:'Poppins';font-weight:700;color:var(--neon-green);">+12.4%</div>
+          </div>
+          <div style="text-align:center;flex:1;border-left:1px solid var(--border);border-right:1px solid var(--border);">
+            <div style="font-size:11px;color:var(--text-dim);">Kelly %</div>
+            <div style="font-family:'Poppins';font-weight:700;color:var(--neon-blue);">4.25%</div>
+          </div>
+          <div style="text-align:center;flex:1;">
+            <div style="font-size:11px;color:var(--text-dim);">Max Risk</div>
+            <div style="font-family:'Poppins';font-weight:700;color:var(--text);">10%</div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3: Track Your P&L -->
+      <div class="data-card">
+        <div class="data-card-label">Signal #3</div>
+        <h3>Track Your P&L</h3>
+        <p>Live bankroll tracking, bet logging, and win/loss resolution. Know your numbers at all times.</p>
+        <div style="display:flex;gap:12px;margin:16px 0;">
+          <div style="flex:1;background:rgba(0,230,122,0.06);border:1px solid rgba(0,230,122,0.15);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;">Bankroll</div>
+            <div style="font-family:'Poppins';font-weight:800;font-size:22px;color:var(--neon-green);">$12.4K</div>
+            <div style="font-size:11px;color:var(--neon-green);">+55% from $8K</div>
+          </div>
+          <div style="flex:1;background:rgba(59,138,255,0.06);border:1px solid rgba(59,138,255,0.15);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;">Win Rate</div>
+            <div style="font-family:'Poppins';font-weight:800;font-size:22px;color:var(--neon-blue);">67%</div>
+            <div style="font-size:11px;color:var(--text-muted);">Last 90 days</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:3px;height:48px;margin-top:8px;">
+          <div style="flex:1;height:30%;background:var(--neon-green);opacity:0.2;border-radius:2px;"></div>
+          <div style="flex:1;height:45%;background:var(--neon-green);opacity:0.3;border-radius:2px;"></div>
+          <div style="flex:1;height:35%;background:var(--neon-green);opacity:0.3;border-radius:2px;"></div>
+          <div style="flex:1;height:55%;background:var(--neon-green);opacity:0.4;border-radius:2px;"></div>
+          <div style="flex:1;height:50%;background:var(--neon-green);opacity:0.4;border-radius:2px;"></div>
+          <div style="flex:1;height:65%;background:var(--neon-green);opacity:0.5;border-radius:2px;"></div>
+          <div style="flex:1;height:60%;background:var(--neon-green);opacity:0.5;border-radius:2px;"></div>
+          <div style="flex:1;height:75%;background:var(--neon-green);opacity:0.6;border-radius:2px;"></div>
+          <div style="flex:1;height:70%;background:var(--neon-green);opacity:0.7;border-radius:2px;"></div>
+          <div style="flex:1;height:85%;background:var(--neon-green);opacity:0.8;border-radius:2px;"></div>
+          <div style="flex:1;height:100%;background:var(--neon-green);opacity:0.9;border-radius:2px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gradient-line"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-inner section-center">
+    <div class="section-tag"><span class="tag-dot"></span> Process</div>
+    <h2 class="section-title">From Signal to Profit</h2>
+    <p class="section-sub">Four automated steps. Zero guesswork.</p>
+  </div>
+  <div class="section-inner">
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h3>We Scan</h3>
+        <p>500+ wallets monitored 24/7 across Polymarket. We identify the sharpest bettors by verified on-chain P&L.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h3>We Detect</h3>
+        <p>When multiple sharp wallets converge on the same market, our EV engine scores the opportunity 0-100.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h3>We Size</h3>
+        <p>Kelly criterion calculates your exact bet. Quarter Kelly default means you grow fast without blowing up.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <h3>You Profit</h3>
+        <p>Get the alert: market, side, edge, dollar amount. Place the bet. Track P&L. Compound your bankroll.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gradient-line"></div>
+
+<!-- EDGE SECTION -->
+<section class="section" id="edge">
+  <div class="section-inner">
+    <div class="edge-grid">
+      <div>
+        <div class="section-tag"><span class="tag-dot"></span> Our Edge</div>
+        <h2 class="section-title">Information Asymmetry.<br>Weaponized.</h2>
+        <p class="section-sub" style="margin-bottom:32px;">We don't sell picks. We built a system that finds where the smart money is going and tells you exactly how much to bet.</p>
+        <ul class="edge-features">
+          <li class="edge-feature">
+            <div class="edge-icon green">&#9889;</div>
+            <div>
+              <h4>Real-Time Sharp Tracking</h4>
+              <p>Top 1% wallets by verified on-chain profit. Not guesses. Data.</p>
+            </div>
+          </li>
+          <li class="edge-feature">
+            <div class="edge-icon fire">&#127919;</div>
+            <div>
+              <h4>Kelly Criterion Sizing</h4>
+              <p>Optimal bankroll allocation on every bet. Grow fast, stay safe.</p>
+            </div>
+          </li>
+          <li class="edge-feature">
+            <div class="edge-icon blue">&#128202;</div>
+            <div>
+              <h4>EV Scoring Engine</h4>
+              <p>Proprietary 0-100 score based on sharp count, conviction, edge, and liquidity.</p>
+            </div>
+          </li>
+          <li class="edge-feature">
+            <div class="edge-icon green">&#127760;</div>
+            <div>
+              <h4>Multi-Market Coverage</h4>
+              <p>Sports, politics, crypto, world events. Wherever there's edge, we find it.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- Live Wallet Panel -->
+      <div class="edge-panel">
+        <div class="edge-panel-header">
+          <span class="edge-panel-title">Top Sharp Wallets</span>
+          <span class="edge-panel-live"><span class="dot"></span> Live</span>
+        </div>
+        <div class="edge-panel-body">
+          <div class="edge-row">
+            <div class="edge-row-left">
+              <div class="edge-avatar" style="background:rgba(0,230,122,0.1);color:var(--neon-green);">1</div>
+              <div><div class="edge-name">SharpWhale_42</div><div class="edge-sub">142 markets traded</div></div>
+            </div>
+            <div class="edge-row-right">
+              <div class="edge-pnl green">+$101,451</div>
+              <div class="edge-roi">+347% ROI</div>
+            </div>
+          </div>
+          <div class="edge-row">
+            <div class="edge-row-left">
+              <div class="edge-avatar" style="background:rgba(255,107,0,0.1);color:var(--fire);">2</div>
+              <div><div class="edge-name">knedloveprovelo</div><div class="edge-sub">89 markets traded</div></div>
+            </div>
+            <div class="edge-row-right">
+              <div class="edge-pnl green">+$46,009</div>
+              <div class="edge-roi">+218% ROI</div>
+            </div>
+          </div>
+          <div class="edge-row">
+            <div class="edge-row-left">
+              <div class="edge-avatar" style="background:rgba(59,138,255,0.1);color:var(--neon-blue);">3</div>
+              <div><div class="edge-name">swisstony</div><div class="edge-sub">67 markets traded</div></div>
+            </div>
+            <div class="edge-row-right">
+              <div class="edge-pnl green">+$26,300</div>
+              <div class="edge-roi">+189% ROI</div>
+            </div>
+          </div>
+          <div class="edge-row">
+            <div class="edge-row-left">
+              <div class="edge-avatar" style="background:rgba(0,230,122,0.1);color:var(--neon-green);">4</div>
+              <div><div class="edge-name">stargate5</div><div class="edge-sub">54 markets traded</div></div>
+            </div>
+            <div class="edge-row-right">
+              <div class="edge-pnl green">+$25,400</div>
+              <div class="edge-roi">+156% ROI</div>
+            </div>
+          </div>
+          <div class="edge-row">
+            <div class="edge-row-left">
+              <div class="edge-avatar" style="background:rgba(255,107,0,0.1);color:var(--fire);">5</div>
+              <div><div class="edge-name">pilotguy</div><div class="edge-sub">112 markets traded</div></div>
+            </div>
+            <div class="edge-row-right">
+              <div class="edge-pnl green">+$18,925</div>
+              <div class="edge-roi">+134% ROI</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gradient-line"></div>
+
+<!-- RESULTS -->
+<section class="section results-section" id="results">
+  <div class="section-inner section-center">
+    <div class="section-tag"><span class="tag-dot"></span> Track Record</div>
+    <h2 class="section-title">The Numbers Speak</h2>
+    <p class="section-sub">Real results from tailing sharp wallets with disciplined Kelly sizing.</p>
+  </div>
+  <div class="results-marquee">
+    <div class="results-track">
+      <div class="result-card"><div class="result-pnl">+$2,400</div><div class="quote">"First month tailing alerts. Quarter Kelly on everything. The edge is real when you have the data."</div><div class="author">Early Access Member</div><div class="role">Polymarket Trader</div></div>
+      <div class="result-card"><div class="result-pnl">+47% ROI</div><div class="quote">"Was throwing darts before. Now I only bet when the sharps align and Kelly says go."</div><div class="author">Beta Tester</div><div class="role">Sports &amp; Politics</div></div>
+      <div class="result-card"><div class="result-pnl">+$5,100</div><div class="quote">"EV scoring is a cheat code. When it hits 70+, I'm in immediately."</div><div class="author">Private Group Member</div><div class="role">Prediction Markets</div></div>
+      <div class="result-card"><div class="result-pnl">+62% ROI</div><div class="quote">"Sharp wallet tracking + Kelly sizing = the only system I trust. $5K to $8K in 6 weeks."</div><div class="author">Discord Member</div><div class="role">Kalshi &amp; Polymarket</div></div>
+      <div class="result-card"><div class="result-pnl">+$3,800</div><div class="quote">"I used to lose chasing public opinion. Now I follow the whales with data."</div><div class="author">Early Adopter</div><div class="role">Multi-Platform</div></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="result-card"><div class="result-pnl">+$2,400</div><div class="quote">"First month tailing alerts. Quarter Kelly on everything. The edge is real when you have the data."</div><div class="author">Early Access Member</div><div class="role">Polymarket Trader</div></div>
+      <div class="result-card"><div class="result-pnl">+47% ROI</div><div class="quote">"Was throwing darts before. Now I only bet when the sharps align and Kelly says go."</div><div class="author">Beta Tester</div><div class="role">Sports &amp; Politics</div></div>
+      <div class="result-card"><div class="result-pnl">+$5,100</div><div class="quote">"EV scoring is a cheat code. When it hits 70+, I'm in immediately."</div><div class="author">Private Group Member</div><div class="role">Prediction Markets</div></div>
+      <div class="result-card"><div class="result-pnl">+62% ROI</div><div class="quote">"Sharp wallet tracking + Kelly sizing = the only system I trust. $5K to $8K in 6 weeks."</div><div class="author">Discord Member</div><div class="role">Kalshi &amp; Polymarket</div></div>
+      <div class="result-card"><div class="result-pnl">+$3,800</div><div class="quote">"I used to lose chasing public opinion. Now I follow the whales with data."</div><div class="author">Early Adopter</div><div class="role">Multi-Platform</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to Trade with<br><span class="accent">an Unfair Edge?</span></h2>
+  <p>Join the FuegoBetz community. Get sharp wallet alerts, Kelly sizing, and +EV signals before anyone else.</p>
+  <a href="https://instagram.com/fuego.betz" target="_blank" class="btn-primary" style="font-size:16px;padding:16px 40px;">Get Early Access &#x2192;</a>
+  <div style="margin-top:16px;font-size:12px;color:var(--text-dim);">No credit card required. No setup fees.</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Fuego<span>Betz</span></div>
+      <div class="footer-tagline">Smart money tracking for prediction market traders. Est. 2024</div>
+      <div class="footer-socials">
+        <a href="https://instagram.com/fuego.betz" target="_blank" title="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://twitter.com/dlobb_" target="_blank" title="Twitter / X">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#signals">Signals</a>
+      <a href="#how">How It Works</a>
+      <a href="#edge">Our Edge</a>
+      <a href="#results">Results</a>
+    </div>
+    <div class="footer-col">
+      <h4>Markets</h4>
+      <a href="#">Polymarket</a>
+      <a href="#">Kalshi</a>
+      <a href="#">Sports</a>
+      <a href="#">Politics</a>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="https://instagram.com/fuego.betz" target="_blank">Instagram</a>
+      <a href="https://twitter.com/dlobb_" target="_blank">Twitter / X</a>
+      <a href="https://instagram.com/fuego.betz" target="_blank">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2024 FuegoBetz. All rights reserved.</span>
+    <span>fuegobetz.com</span>
+  </div>
+</footer>
+
+</body>
+</html>
