@@ -1216,7 +1216,9 @@ tailwind.config = {
       <button @click="activeTab='livefeed'"
         class="px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition border-b-2 flex items-center gap-1.5"
         :class="activeTab==='livefeed' ? 'text-terminal-orange border-terminal-orange' : 'text-white/55 border-transparent hover:text-white'">
-        <span class="text-[7px] font-black px-1 py-0.5 rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">DEMO</span>FEED
+        <span class="text-[7px] font-black px-1 py-0.5 rounded border"
+          :class="isDemoMode ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' : 'bg-terminal-green/20 text-terminal-green border-terminal-green/30'"
+          x-text="isDemoMode ? 'DEMO' : 'LIVE'"></span>FEED
       </button>
       <button @click="activeTab='backtest'"
         class="px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition border-b-2"
@@ -1844,7 +1846,9 @@ tailwind.config = {
               <div class="flex items-center gap-2 px-3 py-2 border-b border-white/5"
                 :class="isTopPick(pick) ? 'bg-terminal-orange/8' : 'bg-white/[0.02]'">
                 <span class="w-[2px] h-[2px] rounded-full" :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green' : 'bg-yellow-400'"></span>
-                <span class="text-[9px] font-black" :class="['polymarket','kalshi'].includes(pick.platform) ? 'text-terminal-green' : 'text-yellow-400'" x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
+                <span class="text-[9px] font-black px-1.5 py-0.5 rounded"
+                  :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green/15 text-terminal-green' : 'bg-yellow-500/20 text-yellow-400'"
+                  x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
                 <span class="text-[9px] text-white/30" x-text="timeAgo(pick.created_at)"></span>
                 <template x-if="isTopPick(pick)">
                   <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-terminal-orange/25 text-terminal-orange">⭐ TOP PICK</span>
@@ -1997,7 +2001,9 @@ tailwind.config = {
               <div class="flex items-center gap-2 px-3 py-2 border-b border-white/5"
                 :class="isTopPick(pick) ? 'bg-terminal-orange/8' : 'bg-white/[0.02]'">
                 <span class="w-[2px] h-[2px] rounded-full" :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green' : 'bg-yellow-400'"></span>
-                <span class="text-[9px] font-black" :class="['polymarket','kalshi'].includes(pick.platform) ? 'text-terminal-green' : 'text-yellow-400'" x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
+                <span class="text-[9px] font-black px-1.5 py-0.5 rounded"
+                  :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green/15 text-terminal-green' : 'bg-yellow-500/20 text-yellow-400'"
+                  x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
                 <span class="text-[9px] text-white/30" x-text="timeAgo(pick.created_at)"></span>
                 <template x-if="isTopPick(pick)">
                   <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-terminal-orange/25 text-terminal-orange">⭐ TOP PICK</span>
@@ -2136,7 +2142,9 @@ tailwind.config = {
               <div class="flex items-center gap-2 px-3 py-2 border-b border-white/5"
                 :class="isTopPick(pick) ? 'bg-terminal-orange/8' : 'bg-white/[0.02]'">
                 <span class="w-[2px] h-[2px] rounded-full" :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green' : 'bg-yellow-400'"></span>
-                <span class="text-[9px] font-black" :class="['polymarket','kalshi'].includes(pick.platform) ? 'text-terminal-green' : 'text-yellow-400'" x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
+                <span class="text-[9px] font-black px-1.5 py-0.5 rounded"
+                  :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green/15 text-terminal-green' : 'bg-yellow-500/20 text-yellow-400'"
+                  x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
                 <span class="text-[9px] text-white/30" x-text="timeAgo(pick.created_at)"></span>
                 <template x-if="isTopPick(pick)">
                   <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-terminal-orange/25 text-terminal-orange">⭐ TOP PICK</span>
@@ -2253,7 +2261,9 @@ tailwind.config = {
               <div class="flex items-center gap-2 px-3 py-2 border-b border-white/5"
                 :class="isTopPick(pick) ? 'bg-terminal-orange/8' : 'bg-white/[0.02]'">
                 <span class="w-[2px] h-[2px] rounded-full" :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green' : 'bg-yellow-400'"></span>
-                <span class="text-[9px] font-black" :class="['polymarket','kalshi'].includes(pick.platform) ? 'text-terminal-green' : 'text-yellow-400'" x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
+                <span class="text-[9px] font-black px-1.5 py-0.5 rounded"
+                  :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green/15 text-terminal-green' : 'bg-yellow-500/20 text-yellow-400'"
+                  x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
                 <span class="text-[9px] text-white/30" x-text="timeAgo(pick.created_at)"></span>
                 <span class="px-1.5 py-0.5 rounded text-[8px] font-black uppercase ml-1"
                   :style="'background:'+getLeagueColor(pick.league)+';color:#000'" x-text="pick.league"></span>
@@ -2324,7 +2334,9 @@ tailwind.config = {
               <div class="flex items-center gap-2 px-3 py-2 border-b border-white/5"
                 :class="isTopPick(pick) ? 'bg-terminal-orange/8' : 'bg-white/[0.02]'">
                 <span class="w-[2px] h-[2px] rounded-full" :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green' : 'bg-yellow-400'"></span>
-                <span class="text-[9px] font-black" :class="['polymarket','kalshi'].includes(pick.platform) ? 'text-terminal-green' : 'text-yellow-400'" x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
+                <span class="text-[9px] font-black px-1.5 py-0.5 rounded"
+                  :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green/15 text-terminal-green' : 'bg-yellow-500/20 text-yellow-400'"
+                  x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
                 <span class="text-[9px] text-white/30" x-text="timeAgo(pick.created_at)"></span>
                 <span class="px-1.5 py-0.5 rounded text-[8px] font-black uppercase ml-1"
                   :style="'background:'+getLeagueColor(pick.league)+';color:#000'" x-text="pick.league"></span>
@@ -2395,7 +2407,9 @@ tailwind.config = {
               <div class="flex items-center gap-2 px-3 py-2 border-b border-white/5"
                 :class="isTopPick(pick) ? 'bg-terminal-orange/8' : 'bg-white/[0.02]'">
                 <span class="w-[2px] h-[2px] rounded-full" :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green' : 'bg-yellow-400'"></span>
-                <span class="text-[9px] font-black" :class="['polymarket','kalshi'].includes(pick.platform) ? 'text-terminal-green' : 'text-yellow-400'" x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
+                <span class="text-[9px] font-black px-1.5 py-0.5 rounded"
+                  :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green/15 text-terminal-green' : 'bg-yellow-500/20 text-yellow-400'"
+                  x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
                 <span class="text-[9px] text-white/30" x-text="timeAgo(pick.created_at)"></span>
                 <span class="px-1.5 py-0.5 rounded text-[8px] font-black uppercase ml-1"
                   :style="'background:'+getLeagueColor(pick.league)+';color:#000'" x-text="pick.league"></span>
@@ -2475,7 +2489,9 @@ tailwind.config = {
               <div class="flex items-center gap-2 px-3 py-2 border-b border-white/5"
                 :class="isTopPick(pick) ? 'bg-terminal-orange/8' : 'bg-white/[0.02]'">
                 <span class="w-[2px] h-[2px] rounded-full" :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green' : 'bg-yellow-400'"></span>
-                <span class="text-[9px] font-black" :class="['polymarket','kalshi'].includes(pick.platform) ? 'text-terminal-green' : 'text-yellow-400'" x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
+                <span class="text-[9px] font-black px-1.5 py-0.5 rounded"
+                  :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green/15 text-terminal-green' : 'bg-yellow-500/20 text-yellow-400'"
+                  x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
                 <span class="text-[9px] text-white/30" x-text="timeAgo(pick.created_at)"></span>
                 <span class="px-1.5 py-0.5 rounded text-[8px] font-black uppercase ml-1"
                   :style="'background:'+getLeagueColor(pick.league)+';color:#000'" x-text="pick.league"></span>
@@ -2557,7 +2573,9 @@ tailwind.config = {
               <div class="flex items-center gap-2 px-3 py-2 border-b border-white/5"
                 :class="isTopPick(pick) ? 'bg-terminal-orange/8' : 'bg-white/[0.02]'">
                 <span class="w-[2px] h-[2px] rounded-full" :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green' : 'bg-yellow-400'"></span>
-                <span class="text-[9px] font-black" :class="['polymarket','kalshi'].includes(pick.platform) ? 'text-terminal-green' : 'text-yellow-400'" x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
+                <span class="text-[9px] font-black px-1.5 py-0.5 rounded"
+                  :class="['polymarket','kalshi'].includes(pick.platform) ? 'bg-terminal-green/15 text-terminal-green' : 'bg-yellow-500/20 text-yellow-400'"
+                  x-text="['polymarket','kalshi'].includes(pick.platform) ? 'LIVE' : 'DEMO'"></span>
                 <span class="text-[9px] text-white/30" x-text="timeAgo(pick.created_at)"></span>
                 <span class="px-1.5 py-0.5 rounded text-[8px] font-black uppercase ml-1"
                   :style="'background:'+getLeagueColor(pick.league)+';color:#000'" x-text="pick.league"></span>
